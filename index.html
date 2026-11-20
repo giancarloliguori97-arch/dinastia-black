@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dinastia Black · Apresentações personalizadas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#080808;--gold:#f1d99b;--gold2:#c9a35a;--ink:#f6f3ec;--muted:#bcb8af;--dim:#8b867c;--line:rgba(241,217,155,.22);--line2:rgba(246,243,236,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(90% 60% at 50% 0%,#2b200f 0%,#080808 60%) fixed,#080808;color:var(--ink);font-family:'Manrope',Arial,sans-serif;min-height:100vh}
+.wrap{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+header{text-align:center}
+header img{width:150px}
+h1{font-family:'Lora',Georgia,serif;font-weight:500;color:var(--gold);font-size:clamp(28px,5vw,40px);margin-top:20px;line-height:1.15}
+.sub{color:var(--muted);margin-top:8px;font-size:15px}
+.std{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:28px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:rgba(241,217,155,.05)}
+.std b{font-weight:700}.std span{display:block;color:var(--dim);font-size:13px;margin-top:2px}
+.search{position:sticky;top:0;z-index:5;padding:16px 0;background:linear-gradient(#080808 75%,rgba(8,8,8,0))}
+input{width:100%;font:500 17px 'Manrope',Arial,sans-serif;color:var(--ink);background:#111;border:1px solid var(--line);border-radius:999px;padding:16px 22px;outline:none}
+input:focus{border-color:var(--gold2);box-shadow:0 0 0 3px rgba(241,217,155,.12)}
+input::placeholder{color:var(--dim)}
+.count{color:var(--dim);font-size:13px;margin:4px 6px 10px}
+ul{list-style:none}
+li{display:flex;align-items:center;gap:10px;padding:14px 4px;border-top:1px solid var(--line2)}
+li:last-child{border-bottom:1px solid var(--line2)}
+.nm{flex:1;min-width:0;font-weight:600;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn{flex:none;text-decoration:none;font:700 12px 'Manrope',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:11px 15px;border-radius:999px;cursor:pointer;border:1px solid var(--line);background:none;color:var(--gold)}
+.btn.pri{background:var(--gold);color:#16110a;border-color:var(--gold)}
+.btn:hover{filter:brightness(1.1)}
+.empty{color:var(--dim);text-align:center;padding:30px 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--gold);color:#16110a;font-weight:700;padding:12px 18px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%)}
+@media (max-width:480px){.btn{padding:10px 12px;font-size:11px}.nm{font-size:15px;white-space:normal}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="/assets/logo-vertical.png" alt="Dinastia Black">
+    <h1>Apresentações personalizadas</h1>
+    <p class="sub">Busque o participante e envie o link da apresentação dele.</p>
+  </header>
+  <div class="std"><div><b>Apresentação padrão</b><span>Sem personalização</span></div>
+    <div style="display:flex;gap:8px"><button class="btn" data-copy="/padrao/">Copiar link</button><a class="btn pri" href="/padrao/" target="_blank" rel="noopener">Abrir</a></div></div>
+  <div class="search"><input id="q" type="search" placeholder="Buscar pelo nome do participante" autocomplete="off"></div>
+  <p class="count" id="count"></p>
+  <ul id="list"></ul>
+</div>
+<div class="toast" id="toast">Link copiado</div>
+<script>
+var DATA=[{"nome": "Adriano", "url": "/p/adriano-b72668/"}, {"nome": "Adriano Lucas Leite", "url": "/p/adriano-lucas-leite-50247b/"}, {"nome": "André Italo Pretto", "url": "/p/andre-italo-pretto-92a2e0/"}, {"nome": "André Rodrigues Duarte", "url": "/p/andre-rodrigues-duarte-a4745c/"}, {"nome": "Francisco Mendes Barros", "url": "/p/francisco-mendes-barros-db5e55/"}, {"nome": "Hailton Cunha", "url": "/p/hailton-cunha-0fdd8b/"}, {"nome": "Jorge Augusto Ferreira", "url": "/p/jorge-augusto-ferreira-482235/"}, {"nome": "João Roberto Pias Thimoteo", "url": "/p/joao-roberto-pias-thimoteo-208d77/"}, {"nome": "Luna Caroline Sampaio Caldas", "url": "/p/luna-caroline-sampaio-caldas-24c38f/"}, {"nome": "Thauane Stefane Cruz de Camargo", "url": "/p/thauane-stefane-cruz-de-camargo-776cbe/"}];
+var norm=function(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();};
+var list=document.getElementById('list'),q=document.getElementById('q'),count=document.getElementById('count');
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function draw(){
+  var t=norm(q.value.trim()), r=DATA.filter(function(p){return !t||norm(p.nome).indexOf(t)>-1;});
+  count.textContent=r.length+(r.length===1?' participante':' participantes');
+  list.innerHTML=r.length?r.map(function(p){return '<li><span class="nm">'+esc(p.nome)+'</span><button class="btn" data-copy="'+p.url+'">Copiar link</button><a class="btn pri" href="'+p.url+'" target="_blank" rel="noopener">Abrir</a></li>';}).join(''):'<li class="empty">Nenhum participante encontrado.</li>';
+}
+q.addEventListener('input',draw);draw();
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-copy]');if(!b)return;
+  var url=location.origin+b.getAttribute('data-copy');
+  var done=function(){var t=document.getElementById('toast');t.classList.add('on');setTimeout(function(){t.classList.remove('on');},1600);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){prompt('Copie o link:',url);});}
+  else{prompt('Copie o link:',url);}
+});
+</script>
+</body>
+</html>

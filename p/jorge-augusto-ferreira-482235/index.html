@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dinastia Black · Jorge Augusto Ferreira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#080808; --bg2:#0e0d0b; --card:#121009; --brown:#2b200f;
+  --gold:#f1d99b; --gold2:#c9a35a; --gold3:#8a6d37;
+  --ink:#f6f3ec; --muted:#bcb8af; --dim:#8b867c;
+  --line:rgba(241,217,155,.22); --line2:rgba(246,243,236,.10);
+  --red:#d8483c;
+  --serif:'Lora',Georgia,serif; --sans:'Manrope',Arial,system-ui,sans-serif;
+  --pad:clamp(22px,5vw,72px); --max:1180px; --bar:56px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:clamp(16px,1.05vw,18px);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+::selection{background:var(--gold);color:#111}
+
+/* ---------- top bar ---------- */
+.bar{position:fixed;inset:0 0 auto 0;height:var(--bar);z-index:50;display:flex;align-items:center;gap:14px;padding:0 var(--pad);
+  background:rgba(8,8,8,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line2);
+  transform:translateY(-100%);transition:transform .45s ease}
+.bar.on{transform:none}
+.bar img{height:28px;width:auto}
+.bar .t{font-family:var(--serif);letter-spacing:.32em;font-size:12px;color:var(--gold);text-transform:uppercase;white-space:nowrap}
+.bar .sec{font-size:12px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.bar .sec:before{content:"·";margin-right:10px;color:var(--gold3)}
+.bar button{margin-left:auto;background:none;border:1px solid var(--line);color:var(--gold);font:600 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;
+  padding:10px 14px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:8px;flex:none}
+.bar button:hover{background:rgba(241,217,155,.08)}
+.bar button i{display:block;width:14px;height:1.5px;background:currentColor;box-shadow:0 -4px 0 currentColor,0 4px 0 currentColor}
+.prog{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:linear-gradient(90deg,var(--gold3),var(--gold));transform-origin:0 50%;transform:scaleX(0)}
+@media (max-width:640px){.bar .sec{display:none}.bar .t{font-size:10px;letter-spacing:.24em}}
+
+/* ---------- index drawer ---------- */
+.toc{position:fixed;inset:0;z-index:60;background:rgba(5,5,5,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s;overflow:auto}
+.toc.open{opacity:1;visibility:visible}
+.toc-in{width:100%;max-width:880px;margin:0 auto;padding:28px var(--pad) 60px}
+.toc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.toc-head img{height:44px}
+.toc-close{background:none;border:1px solid var(--line);color:var(--gold);width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;line-height:1}
+.toc h2{font-family:var(--serif);font-weight:500;color:var(--gold);font-size:clamp(32px,5vw,52px);margin-bottom:18px}
+.toc ol{list-style:none}
+.toc a{display:grid;grid-template-columns:56px 1fr auto;align-items:baseline;gap:12px;padding:15px 0;border-top:1px solid var(--line2);text-decoration:none}
+.toc a:hover .n,.toc a:hover .tt{color:var(--gold)}
+.toc .n{font-family:var(--serif);color:var(--gold2);font-size:20px}
+.toc .tt{font-weight:600;font-size:clamp(16px,2vw,19px);transition:color .2s}
+.toc .tt small{display:block;font-weight:400;color:var(--dim);font-size:13px;margin-top:2px}
+.toc .pg{font-family:var(--serif);color:var(--dim);font-size:14px}
+
+/* ---------- pages ---------- */
+.page{position:relative;min-height:100vh;min-height:100svh;padding:calc(var(--bar) + clamp(36px,6vw,80px)) var(--pad) clamp(40px,6vw,72px);
+  display:flex;flex-direction:column;scroll-margin-top:0;overflow:hidden;
+  background:radial-gradient(120% 80% at 8% 0%,var(--brown) 0%,var(--bg) 58%)}
+.page.alt{background:var(--bg2)}
+.page.plain{background:var(--bg)}
+.page.glow-r{background:radial-gradient(100% 80% at 100% 0%,var(--brown) 0%,var(--bg) 58%)}
+.wrap{width:100%;max-width:var(--max);margin:0 auto;flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2}
+.runhead{width:100%;max-width:var(--max);margin:0 auto clamp(28px,5vw,56px);display:flex;align-items:center;gap:12px;position:relative;z-index:2;
+  font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold2);font-weight:600}
+.runhead img{height:22px;width:auto}
+.runhead:after{content:"";flex:1;height:1px;background:var(--line)}
+.runhead span{order:3;color:var(--dim)}
+.folio{width:100%;max-width:var(--max);margin:clamp(36px,6vw,64px) auto 0;display:flex;align-items:center;gap:16px;position:relative;z-index:2;
+  font-family:var(--serif);color:var(--gold);font-size:17px}
+.folio:before,.folio:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line))}
+.folio:after{background:linear-gradient(90deg,var(--line),transparent)}
+.folio b{font-weight:500;display:flex;align-items:center;gap:14px}
+.folio b:before{content:"";width:7px;height:7px;border:1px solid var(--gold2);transform:rotate(45deg)}
+
+/* ---------- type ---------- */
+.kick{font-size:11px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--gold2);margin-bottom:18px}
+.lead{font-weight:500;color:var(--muted);font-size:clamp(17px,1.7vw,24px);line-height:1.35}
+.h-sans{font-weight:700;color:var(--ink);font-size:clamp(28px,4.2vw,62px);line-height:1.1;letter-spacing:-.02em}
+.h-serif{font-family:var(--serif);font-weight:500;color:var(--gold);font-size:clamp(30px,4.6vw,68px);line-height:1.12;letter-spacing:-.01em}
+.h-sans + .h-serif{margin-top:.08em}
+.giant{font-family:var(--serif);font-weight:600;color:var(--gold);line-height:.9;letter-spacing:-.03em}
+.nw{white-space:nowrap}
+.body{color:var(--muted);font-size:clamp(16px,1.15vw,18px);line-height:1.7;max-width:62ch}
+.body strong,.body b{color:var(--ink);font-weight:600}
+.gold{color:var(--gold)}
+.serif{font-family:var(--serif)}
+.rule{height:1px;background:var(--line);margin:clamp(24px,4vw,40px) 0;border:0}
+.mt-s{margin-top:16px}.mt{margin-top:clamp(20px,3vw,32px)}.mt-l{margin-top:clamp(32px,5vw,56px)}
+
+
+/* ---------- personalizado ---------- */
+.p-hero{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:clamp(24px,5vw,72px);align-items:center}
+.p-hero .ph{aspect-ratio:3/4.2}
+@media (max-width:820px){.p-hero{grid-template-columns:1fr}.p-hero .ph{aspect-ratio:4/4.4;max-height:64vh}}
+.p-for{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold2);font-weight:700}
+.p-name{font-family:var(--serif);color:var(--gold);font-weight:500;font-size:clamp(34px,4.4vw,60px);line-height:1.05;margin-top:10px}
+.p-firm{color:var(--muted);font-size:14px;margin-top:8px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.facts div{background:var(--bg);padding:clamp(18px,2vw,26px)}
+.page.alt .facts div{background:var(--bg2)}
+.facts b{display:block;font-family:var(--serif);color:var(--gold);font-weight:500;font-size:clamp(22px,2.2vw,30px);line-height:1.1}
+.facts span{display:block;color:var(--muted);font-size:14px;margin-top:10px;line-height:1.45}
+@media (max-width:900px){.facts{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.facts{grid-template-columns:1fr}}
+.goal{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,3vw,40px);align-items:center;border:1px solid var(--gold2);border-radius:18px;padding:clamp(22px,3vw,36px);background:linear-gradient(160deg,rgba(43,32,15,.85),rgba(8,8,8,.4))}
+.goal .giant{font-size:clamp(46px,6vw,92px)}
+@media (max-width:640px){.goal{grid-template-columns:1fr}}
+.match{display:grid;gap:clamp(12px,1.6vw,18px)}
+.match a{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(14px,2.4vw,32px);align-items:center;text-decoration:none;border:1px solid var(--line2);border-radius:16px;padding:clamp(18px,2.2vw,26px);transition:border-color .25s,background .25s}
+.match a:hover{border-color:var(--gold2);background:rgba(241,217,155,.04)}
+.match .tag{font-size:10px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--gold2)}
+.match h4{font-weight:700;font-size:clamp(17px,1.6vw,21px);line-height:1.3;margin-top:6px}
+.match .arrow{font-family:var(--serif);color:var(--gold);font-size:28px}
+.match .sol b{display:block;font-family:var(--serif);color:var(--gold);font-weight:500;font-size:clamp(18px,1.7vw,22px);line-height:1.25}
+.match .sol span{display:block;color:var(--muted);font-size:14px;margin-top:6px;line-height:1.45}
+@media (max-width:760px){.match a{grid-template-columns:1fr}.match .arrow{transform:rotate(90deg);width:max-content}}
+.plan{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,24px)}
+.plan li{border-top:1px solid var(--gold2);padding-top:18px}
+.plan .n{font-family:var(--serif);color:var(--gold);font-size:clamp(36px,4vw,56px);line-height:1}
+.plan h4{font-weight:700;font-size:clamp(18px,1.7vw,22px);margin-top:12px;line-height:1.25}
+.plan p{color:var(--muted);font-size:15px;margin-top:8px;line-height:1.55}
+@media (max-width:820px){.plan{grid-template-columns:1fr}}
+
+/* ---------- reveal ---------- */
+.js .rv{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+.js .rv.d1{transition-delay:.12s}.js .rv.d2{transition-delay:.24s}.js .rv.d3{transition-delay:.36s}.js .rv.d4{transition-delay:.48s}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .rv{opacity:1;transform:none;transition:none}}
+
+/* ---------- cover ---------- */
+.cover{min-height:100vh;min-height:100svh;position:relative;display:flex;flex-direction:column;padding:clamp(28px,5vw,56px) var(--pad) clamp(28px,5vw,56px);overflow:hidden;
+  background:radial-gradient(70% 55% at 50% 42%,#2b200f 0%,#0b0a08 62%,#060606 100%)}
+.cover .pat{position:absolute;inset:-20px;background-image:url(/assets/monograma.png);background-size:46px auto;background-repeat:space;opacity:.04}
+.cover-center{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:clamp(28px,4vw,48px)}
+.cover-logo{width:clamp(200px,26vw,340px);height:auto;animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
+.cover h1{font-family:var(--serif);font-weight:500;color:var(--gold);font-size:clamp(30px,4.4vw,64px);line-height:1.15;letter-spacing:-.01em;max-width:22ch;text-wrap:balance;animation:rise 1.4s .25s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.cover-lines{position:relative;z-index:2;max-width:var(--max);width:100%;align-self:center;margin-top:clamp(28px,4vw,44px);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,24px)}
+.cover-lines a{display:block;text-decoration:none;border-top:1px solid var(--gold2);padding-top:16px;font-family:var(--serif);color:var(--ink);font-size:clamp(18px,1.8vw,24px);transition:color .2s}
+.cover-lines a:hover{color:var(--gold)}
+@media (max-width:640px){.cover-lines{grid-template-columns:1fr;gap:0}.cover-lines a{padding:14px 0}}
+@media (prefers-reduced-motion:reduce){.cover-logo,.cover h1{animation:none}}
+
+/* ---------- sumário ---------- */
+.contents{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,6vw,90px);align-items:start}
+.contents ol{list-style:none;counter-reset:c}
+.contents li a{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:baseline;padding:13px 0;border-top:1px solid var(--line2);text-decoration:none;transition:padding .25s}
+.contents li a:hover{padding-left:6px}
+.contents li a:hover .tt{color:var(--gold)}
+.contents .n{font-family:var(--serif);color:var(--gold2);font-size:18px}
+.contents .tt{font-weight:600;font-size:16px;transition:color .2s}
+.contents .pg{font-family:var(--serif);color:var(--dim);font-size:14px}
+.editor{border-left:1px solid var(--line);padding-left:clamp(18px,3vw,32px)}
+.editor .sig{margin-top:22px;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+.editor .sig small{display:block;font-family:var(--sans);font-style:normal;font-size:12px;color:var(--dim);letter-spacing:.06em;margin-top:4px}
+@media (max-width:820px){.contents{grid-template-columns:1fr}}
+
+/* ---------- stat page ---------- */
+.stat-94 .giant{font-size:clamp(140px,26vw,400px)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,6vw,90px);align-items:center}
+.split.wide-l{grid-template-columns:1.2fr .8fr}
+.split.wide-r{grid-template-columns:.85fr 1.15fr}
+@media (max-width:820px){.split,.split.wide-l,.split.wide-r{grid-template-columns:1fr}}
+.club{border:1px solid var(--line);border-radius:18px;padding:clamp(22px,3vw,36px);background:linear-gradient(180deg,rgba(241,217,155,.06),rgba(241,217,155,0))}
+.club .h-serif{font-size:clamp(34px,4vw,56px)}
+
+/* ---------- charts ---------- */
+.chart{width:100%;height:auto;overflow:visible}
+.chart .draw{stroke-dasharray:1000;stroke-dashoffset:1000;transition:stroke-dashoffset 2.2s cubic-bezier(.4,.1,.2,1) .2s}
+.in .chart .draw,.chart.in .draw{stroke-dashoffset:0}
+.no-js .chart .draw{stroke-dashoffset:0}
+.qa{display:grid;gap:clamp(20px,3vw,32px)}
+.qa .q{padding-top:20px;border-top:1px solid var(--line2)}
+.qa .q .h-serif{font-size:clamp(36px,5vw,72px)}
+
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(4px,.8vw,10px);align-items:end;height:clamp(180px,26vw,300px)}
+.months div{display:flex;flex-direction:column;justify-content:flex-end;height:100%;gap:8px}
+.months span{display:block;border-radius:2px 2px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.months.in span,.no-js .months span{transform:none}
+.months em{font-style:normal;font-size:clamp(9px,1vw,12px);color:var(--dim);text-align:center}
+.months div:last-child em{color:var(--gold);font-weight:700}
+
+.steps{list-style:none}
+.steps li{display:grid;grid-template-columns:clamp(54px,7vw,90px) 1fr;align-items:baseline;padding:clamp(16px,2.2vw,24px) 0;border-top:1px solid var(--line2)}
+.steps li:last-child{border-bottom:1px solid var(--line2)}
+.steps .n{font-family:var(--serif);color:var(--gold);font-size:clamp(26px,3vw,40px)}
+.steps .s{font-weight:700;font-size:clamp(19px,2.2vw,30px);letter-spacing:-.01em}
+
+/* ---------- photo blocks ---------- */
+.ph{position:relative;border-radius:18px;overflow:hidden;background:#111}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph.frame{border:1px solid var(--line)}
+.cap{font-size:12px;color:var(--dim);margin-top:10px;letter-spacing:.02em}
+.fade-photo{position:absolute;inset:0 0 0 auto;width:min(58%,760px);z-index:0}
+.fade-photo img{width:100%;height:100%;object-fit:cover}
+.fade-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(8,8,8,.75) 22%,rgba(8,8,8,.1) 60%),linear-gradient(0deg,var(--bg) 0%,rgba(8,8,8,0) 30%)}
+.page.alt .fade-photo:after{background:linear-gradient(90deg,var(--bg2) 0%,rgba(14,13,11,.75) 22%,rgba(14,13,11,.1) 60%),linear-gradient(0deg,var(--bg2) 0%,rgba(14,13,11,0) 30%)}
+.with-photo .wrap{max-width:var(--max)}
+.with-photo .txt{max-width:560px}
+@media (max-width:820px){
+  .fade-photo{position:relative;inset:auto;width:calc(100% + 2*var(--pad));margin:0 calc(-1*var(--pad)) -40px;height:62vw;max-height:480px;order:-1}
+  .fade-photo:after,.page.alt .fade-photo:after{background:linear-gradient(0deg,var(--bg) 0%,rgba(8,8,8,0) 55%)}
+  .page.alt .fade-photo:after{background:linear-gradient(0deg,var(--bg2) 0%,rgba(14,13,11,0) 55%)}
+  .with-photo{padding-top:var(--bar)}
+  .with-photo .runhead{margin-top:28px}
+}
+
+/* ---------- pillars ---------- */
+.fronts{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.6vw,20px)}
+.fronts a{display:block;text-decoration:none;border-top:1px solid var(--gold2);padding:22px 20px 24px;background:linear-gradient(180deg,rgba(241,217,155,.07),rgba(241,217,155,0) 80%);border-radius:0 0 14px 14px;transition:background .3s}
+.fronts a:hover{background:linear-gradient(180deg,rgba(241,217,155,.13),rgba(241,217,155,0) 80%)}
+.fronts .n{font-family:var(--serif);color:var(--gold);font-size:clamp(40px,4.5vw,64px);line-height:1}
+.fronts h3{font-size:clamp(19px,1.8vw,24px);font-weight:700;margin-top:16px;line-height:1.2}
+.fronts p{color:var(--muted);font-size:15px;margin-top:8px;line-height:1.5}
+.fronts .go{display:inline-block;margin-top:14px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);font-weight:700}
+@media (max-width:820px){.fronts{grid-template-columns:1fr}}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tags span{font-size:12.5px;padding:7px 13px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+.pillar-no{font-family:var(--serif);color:rgba(241,217,155,.08);font-size:clamp(220px,34vw,520px);line-height:.8;position:absolute;right:var(--pad);bottom:-.06em;z-index:1;pointer-events:none;font-weight:600}
+
+.extras{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.4vw,16px)}
+.extras a{display:block;text-decoration:none;border:1px solid var(--line);border-radius:14px;padding:18px;transition:background .3s}
+.extras a:hover{background:rgba(241,217,155,.07)}
+.extras b{display:block;font-family:var(--serif);color:var(--gold);font-weight:500;font-size:clamp(18px,1.6vw,21px);line-height:1.25}
+.extras span{display:block;color:var(--dim);font-size:13.5px;margin-top:8px;line-height:1.45}
+@media (max-width:980px){.extras{grid-template-columns:1fr 1fr}}@media (max-width:520px){.extras{grid-template-columns:1fr}}
+.eco{display:flex;flex-direction:column;align-items:center;text-align:center}
+.eco img{width:clamp(180px,24vw,300px)}
+
+/* ---------- options / lists ---------- */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,24px)}
+.duo > div{border-top:1px solid var(--gold2);padding-top:18px}
+.duo h4{font-weight:700;font-size:clamp(18px,1.7vw,22px);line-height:1.25}
+.duo p{color:var(--dim);font-size:14.5px;margin-top:6px}
+@media (max-width:640px){.duo{grid-template-columns:1fr}}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,28px)}
+.trio > div{border-top:1px solid var(--gold2);padding-top:18px;font-weight:700;font-size:clamp(18px,1.8vw,24px);line-height:1.25}
+@media (max-width:820px){.trio{grid-template-columns:1fr}}
+
+/* ---------- group mock ---------- */
+.phone{background:#fff;color:#1b1b1b;border-radius:22px;padding:18px 18px 10px;max-width:380px;width:100%;margin-left:auto;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(241,217,155,.25)}
+.phone .top{text-align:center;font-size:11px;color:#8a8a8a}
+.phone .av{width:58px;height:58px;border-radius:50%;background:#0b0b0b;margin:10px auto 8px;display:grid;place-items:center}
+.phone .av img{width:26px}
+.phone .nm{text-align:center;font-weight:700;font-size:16px}
+.phone .sb{text-align:center;font-size:12px;color:#8a8a8a;margin-bottom:12px}
+.phone .lbl{font-size:11px;color:#8a8a8a;padding:8px 2px 4px;border-top:1px solid #eee}
+.phone .me{display:flex;align-items:center;gap:10px;border:1.5px solid #d9b968;border-radius:10px;padding:8px 10px;margin:2px 0 8px;font-weight:700;font-size:14px}
+.phone .me i{width:30px;height:30px;border-radius:50%;background:#efe7d3;color:#8a6d37;font-style:normal;display:grid;place-items:center;font-size:13px}
+.phone .team{font-size:11px;color:#b08a3e;font-weight:700;padding:4px 2px}
+.phone ul{list-style:none}
+.phone li{display:flex;align-items:center;gap:10px;padding:6px 2px;font-size:13.5px;border-bottom:1px solid #f2f2f2}
+.phone li:last-child{border-bottom:0}
+.phone li img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+.phone li span{color:#8a8a8a}
+@media (max-width:820px){.phone{margin:0 auto}}
+
+/* ---------- mosaic ---------- */
+.mosaic{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:1fr 1fr;gap:clamp(8px,1vw,14px);aspect-ratio:16/11}
+.mosaic .ph{border-radius:14px}
+.mosaic .a{grid-row:1/3}
+.mosaic .b{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1vw,14px)}
+@media (max-width:640px){.mosaic{aspect-ratio:auto;grid-template-columns:1fr 1fr;grid-template-rows:auto}.mosaic .a{grid-row:auto;grid-column:1/3;aspect-ratio:4/3}.mosaic > .ph:not(.a){aspect-ratio:16/10;grid-column:1/3}.mosaic .b{grid-column:1/3;aspect-ratio:2/1.1}}
+
+/* ---------- case ---------- */
+.case-head{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,5vw,72px);align-items:start}
+@media (max-width:820px){.case-head{grid-template-columns:1fr}}
+.case-head .ph{aspect-ratio:3/4.4}
+@media (max-width:820px){.case-head .ph{aspect-ratio:4/4.6;max-height:70vh}}
+.case-name{font-family:var(--serif);color:var(--gold);font-weight:500;font-size:clamp(32px,4vw,54px);line-height:1.08}
+.case-firm{font-size:13px;color:var(--gold2);letter-spacing:.06em;margin-top:8px;font-weight:600}
+.blk{margin-top:clamp(20px,2.6vw,30px)}
+.blk h5{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:8px}
+.blk p{color:var(--muted);line-height:1.7}
+.blk p + p{margin-top:10px}
+blockquote.pull{margin:18px 0;padding-left:18px;border-left:2px solid var(--gold2);font-family:var(--serif);font-style:italic;color:var(--gold);font-size:clamp(20px,2vw,27px);line-height:1.35}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.kpis div{background:var(--bg);padding:clamp(16px,2vw,24px)}
+.page.alt .kpis div{background:var(--bg2)}
+.kpis b{display:block;font-family:var(--serif);color:var(--gold);font-weight:500;font-size:clamp(26px,3vw,40px);line-height:1}
+.kpis span{display:block;color:var(--muted);font-size:13.5px;margin-top:10px;line-height:1.4}
+@media (max-width:820px){.kpis{grid-template-columns:1fr 1fr}}
+.gold-card{border:1px solid var(--line);border-radius:18px;padding:clamp(22px,3vw,34px);background:linear-gradient(160deg,rgba(43,32,15,.75),rgba(10,10,10,.6))}
+.gold-card h5{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold2);font-weight:700}
+.gold-card q{display:block;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:clamp(21px,2.2vw,30px);line-height:1.35;margin-top:12px;quotes:"“" "”"}
+.gold-card ul{list-style:none;margin-top:16px}
+.gold-card li{position:relative;padding-left:22px;color:var(--ink);margin-top:8px}
+.gold-card li:before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;background:var(--gold2);transform:rotate(45deg)}
+.case-foot{display:grid;grid-template-columns:1.4fr .6fr;gap:clamp(18px,3vw,36px);align-items:stretch}
+.case-foot .ph{min-height:260px}
+@media (max-width:820px){.case-foot{grid-template-columns:1fr}.case-foot .ph{max-height:560px}}
+
+/* ---------- conta ---------- */
+.pains{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(20px,3vw,40px)}
+.pains div{display:grid;grid-template-columns:44px 1fr;gap:6px;padding:18px 0;border-top:1px solid var(--gold3)}
+.pains b{font-family:var(--serif);color:var(--gold);font-weight:500;font-size:24px;line-height:1.2}
+.pains p{font-weight:600;font-size:clamp(16px,1.5vw,19px);line-height:1.35}
+@media (max-width:640px){.pains{grid-template-columns:1fr}}
+.payroll{width:100%;border-collapse:collapse}
+.payroll td{padding:12px 0;border-bottom:1px solid var(--line2);vertical-align:baseline}
+.payroll td:first-child{font-weight:600;font-size:15.5px}
+.payroll td:nth-child(2){color:var(--dim);font-size:13.5px;padding:12px 14px}
+.payroll td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:15px}
+.payroll tfoot td{border:0;padding-top:20px}
+.payroll tfoot td:first-child{font-size:18px}
+.payroll tfoot td:last-child{font-family:var(--serif);color:var(--gold);font-size:clamp(28px,3vw,40px)}
+@media (max-width:640px){.payroll td:nth-child(2){display:none}}
+
+/* ---------- price ---------- */
+.price .from{position:relative;display:inline-block;font-family:var(--serif);font-weight:600;color:var(--dim);font-size:clamp(40px,6vw,88px);line-height:1}
+.price .from:after{content:"";position:absolute;left:-2%;right:-2%;top:52%;height:clamp(3px,.4vw,6px);background:var(--red);transform:rotate(-4deg) scaleX(0);transform-origin:left;transition:transform .7s ease .5s}
+.price.in .from:after,.no-js .price .from:after{transform:rotate(-4deg) scaleX(1)}
+.price .now{font-size:clamp(76px,13vw,200px);margin-top:.12em}
+.inst{display:flex;align-items:baseline;flex-wrap:wrap;gap:.25em .45em;margin-top:clamp(18px,2.5vw,28px)}
+.inst .x{font-weight:700;font-size:clamp(22px,2.6vw,38px)}
+.inst .v{font-family:var(--serif);color:var(--gold);font-weight:600;font-size:clamp(40px,5.4vw,78px);line-height:1}
+.badge{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#1a1408;background:var(--gold);padding:8px 14px;border-radius:999px}
+.cta{display:inline-flex;align-items:center;gap:12px;margin-top:28px;background:var(--gold);color:#16110a;text-decoration:none;font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;padding:18px 26px;border-radius:999px;transition:transform .2s,box-shadow .2s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(241,217,155,.25)}
+.cta[hidden]{display:none}
+
+/* ---------- closing ---------- */
+.clubs{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,24px)}
+.clubs > div{border:1px solid var(--line2);border-radius:18px;padding:clamp(22px,3vw,34px)}
+.clubs .six{border-color:var(--gold2);background:linear-gradient(160deg,rgba(43,32,15,.85),rgba(8,8,8,.4))}
+.clubs b{display:block;font-family:var(--serif);font-weight:600;font-size:clamp(54px,7vw,104px);line-height:.9;color:var(--dim)}
+.clubs .six b{color:var(--gold)}
+.clubs p{margin-top:14px;color:var(--muted)}
+.clubs .six p{color:var(--ink)}
+@media (max-width:640px){.clubs{grid-template-columns:1fr}}
+.final{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:calc(var(--bar) + 40px) var(--pad) clamp(40px,6vw,72px);overflow:hidden;background:#050505}
+.final .bg{position:absolute;inset:0}
+.final .bg img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;opacity:.55}
+.final .bg:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.2) 0%,rgba(5,5,5,.5) 45%,#050505 92%)}
+
+/* ---------- manifesto ---------- */
+.mani{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:start}
+.mani .big{font-family:var(--serif);font-size:clamp(26px,3vw,42px);line-height:1.3;color:var(--ink)}
+.mani .big em{font-style:normal;color:var(--gold)}
+@media (max-width:820px){.mani{grid-template-columns:1fr}}
+
+/* ---------- back cover ---------- */
+.back{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:80px var(--pad);position:relative;overflow:hidden;
+  background:radial-gradient(60% 50% at 50% 45%,#2b200f 0%,#080808 75%)}
+.back .pat{position:absolute;inset:-20px;background-image:url(/assets/monograma.png);background-size:46px auto;background-repeat:space;opacity:.045}
+.back img.em{width:clamp(220px,32vw,380px);position:relative}
+.back p{position:relative;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--dim);text-align:center;line-height:2}
+.back p b{color:var(--gold);font-weight:700}
+.top-link{position:relative;margin-top:10px;background:none;border:1px solid var(--line);color:var(--gold);font:600 11px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;padding:13px 18px;border-radius:999px;cursor:pointer;text-decoration:none}
+</style>
+</head>
+<body class="no-js">
+
+<!-- top bar -->
+<header class="bar" id="bar">
+  <img src="/assets/monograma.png" alt="Dinastia Black">
+  <span class="t">Dinastia Black</span>
+  <span class="sec" id="secName">Sumário</span>
+  <button type="button" id="openToc" aria-controls="toc" aria-expanded="false"><i></i>Sumário</button>
+  <div class="prog" id="prog"></div>
+</header>
+
+<!-- index drawer -->
+<nav class="toc" id="toc" aria-label="Sumário">
+  <div class="toc-in">
+    <div class="toc-head"><img src="/assets/logo-horizontal.png" alt="Dinastia Black"><button class="toc-close" id="closeToc" aria-label="Fechar">×</button></div>
+    <h2>O que está incluído</h2>
+    <ol id="tocList"></ol>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ CAPA ============ -->
+<section class="cover" id="capa" data-title="Capa">
+  <div class="pat"></div>
+  <div class="cover-center">
+    <img class="cover-logo" src="/assets/logo-vertical.png" alt="Dinastia Black">
+    <h1>Jorge, o seu escritório dentro do ecossistema Bacellar e Luz.</h1>
+  </div>
+  <nav class="cover-lines" aria-label="As três frentes">
+    <a href="#pilar-1">Operação jurídica</a>
+    <a href="#pilar-2">Aumento de receita</a>
+    <a href="#pilar-3">Conselho jurídico</a>
+  </nav>
+</section>
+
+<!-- ============ SUMÁRIO ============ -->
+<section class="page" id="sumario" data-title="Sumário">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Dinastia Black<span>Sumário</span></div>
+  <div class="wrap">
+    <div class="contents">
+      <div class="rv">
+        <img src="/assets/logo-vertical.png" alt="Dinastia Black" style="width:min(240px,60%);margin-bottom:28px">
+        <div class="kick">Sumário</div>
+        <h2 class="h-sans">O que está incluído</h2>
+        <p class="h-serif">na Dinastia Black.</p>
+      </div>
+      <ol class="rv d1" id="contentsList"></ol>
+    </div>
+  </div>
+  <div class="folio"><b>02</b></div>
+</section>
+
+
+
+
+
+
+
+<!-- ============ ECOSSISTEMA / 3 FRENTES ============ -->
+<section class="page alt" id="resultado-assistido" data-title="Resultado assistido" data-toc="As três frentes">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Como funciona<span>01</span></div>
+  <div class="wrap">
+    <div class="rv">
+      <p class="h-sans" style="font-size:clamp(26px,3.2vw,46px)">Dinastia Black é resultado assistido.</p>
+      <p class="lead mt-s">Em três frentes, com o nosso time ao seu lado.</p>
+    </div>
+    <div class="fronts mt rv d1">
+      <a href="#pilar-1"><div class="n">1</div><h3>Operação jurídica</h3><p>Seu time produzindo as peças como se fosse você.</p><span class="go">Ver →</span></a>
+      <a href="#pilar-2"><div class="n">2</div><h3>Aumento de receita</h3><p>Mais contratos fechados, com os clientes certos.</p><span class="go">Ver →</span></a>
+      <a href="#pilar-3"><div class="n">3</div><h3>Conselho jurídico</h3><p>Acesso direto à Dra. Andressa.</p><span class="go">Ver →</span></a>
+    </div>
+    <p class="lead mt-l rv">E, junto com as três frentes:</p>
+    <div class="extras mt rv d1">
+      <a href="#casos-acima-de-1-milhao"><b>Casos acima de R$ 1 milhão</b><span>Consultoria do caso ou condução junto com o Bacellar e Luz</span></a>
+      <a href="#sempre-assistido"><b>Grupo exclusivo do escritório</b><span>Com o time Bacellar e Luz e reuniões de acompanhamento</span></a>
+      <a href="#encontros-presenciais"><b>2 encontros presenciais em 2027</b><span>Frente a frente com Dra. Andressa, Dr. Plínio e equipe</span></a>
+      <a href="#os-melhores-escritorios"><b>Rede dos melhores escritórios</b><span>Acesso direto à advocacia bancária de todo o país</span></a>
+    </div>
+  </div>
+  <div class="folio"><b>03</b></div>
+</section>
+
+<!-- ============ PILAR 1 ============ -->
+<section class="page with-photo plain" id="pilar-1" data-title="Pilar 1 · Operação jurídica" data-toc="Pilar 1 · Operação jurídica">
+  <div class="fade-photo"><img src="/assets/pilar1.jpg" alt="Equipe jurídica em reunião" loading="lazy"></div>
+  <div class="pillar-no">1</div>
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Pilar 1 · Operação jurídica<span>02</span></div>
+  <div class="wrap">
+    <div class="txt">
+      <div class="kick rv">Pilar 1 · Operação jurídica</div>
+      <p class="h-sans rv" style="font-size:clamp(28px,3.6vw,52px)">Seu time jurídico produzindo as peças como se fosse você.</p>
+      <p class="h-serif rv d1 mt-s" style="font-size:clamp(22px,2.4vw,34px)">E você com tempo para focar no que faz o escritório crescer.</p>
+      <div class="tags mt-l rv d2"><span>Judicial</span><span>Extrajudicial</span><span>Negociação</span><span>Dossiê</span><span>Treinamento do time</span></div>
+    </div>
+  </div>
+  <div class="folio"><b>04</b></div>
+</section>
+
+<!-- ============ PILAR 2 ============ -->
+<section class="page with-photo alt" id="pilar-2" data-title="Pilar 2 · Aumento de receita" data-toc="Pilar 2 · Aumento de receita">
+  <div class="fade-photo"><img src="/assets/pilar2.jpg" alt="Time comercial em atendimento" loading="lazy" style="object-position:50% 0%"></div>
+  <div class="pillar-no">2</div>
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Pilar 2 · Aumento de receita<span>03</span></div>
+  <div class="wrap">
+    <div class="txt">
+      <div class="kick rv">Pilar 2 · Aumento de receita</div>
+      <p class="h-sans rv" style="font-size:clamp(28px,3.6vw,52px)">Seu escritório fechando muito mais contratos.</p>
+      <p class="h-serif rv d1 mt-s" style="font-size:clamp(22px,2.4vw,34px)">Os clientes certos, pagando o preço certo, e o seu comercial convertendo.</p>
+      <div class="tags mt-l rv d2"><span>Anúncios</span><span>Instagram</span><span>Comercial</span><span>Precificação</span></div>
+    </div>
+  </div>
+  <div class="folio"><b>05</b></div>
+</section>
+
+<!-- ============ PILAR 3 ============ -->
+<section class="page with-photo plain" id="pilar-3" data-title="Pilar 3 · Conselho jurídico" data-toc="Pilar 3 · Conselho jurídico">
+  <div class="fade-photo"><img src="/assets/pilar3.jpg" alt="Dra. Andressa em reunião no escritório" loading="lazy"></div>
+  <div class="pillar-no">3</div>
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Pilar 3 · Conselho jurídico<span>04</span></div>
+  <div class="wrap">
+    <div class="txt">
+      <div class="kick rv">Pilar 3 · Conselho jurídico</div>
+      <p class="h-sans rv" style="font-size:clamp(34px,4.4vw,64px)">Acesso direto</p>
+      <p class="h-serif rv d1" style="font-size:clamp(34px,4.4vw,64px)">à Dra. Andressa.</p>
+      <div class="duo mt-l rv d2">
+        <div><h4>Para um conselho, uma estrutura, uma decisão.</h4></div>
+        <div><h4>Um dia com ela no seu escritório,</h4><p>desenhando a estratégia junto.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><b>06</b></div>
+</section>
+
+<!-- ============ CASOS > 1 MI ============ -->
+<section class="page with-photo" id="casos-acima-de-1-milhao" data-title="Casos acima de R$ 1 milhão" data-toc="Casos acima de R$ 1 milhão">
+  <div class="fade-photo"><img src="/assets/andressa.jpg" alt="Dra. Andressa Bacellar" loading="lazy" style="object-position:70% 30%"></div>
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Casos acima de R$ 1 milhão<span>05</span></div>
+  <div class="wrap">
+    <div class="txt">
+    <div class="kick rv">Casos acima de R$ 1 milhão</div>
+    <p class="h-sans rv" style="font-size:clamp(28px,3.6vw,52px)">Chegou um cliente de R$ 7 milhões?</p>
+    <p class="h-serif rv d1" style="font-size:clamp(34px,4.6vw,68px)">Você não perde o caso.</p>
+    <div class="duo mt-l rv d2">
+      <div><h4>Consultoria do caso com o nosso time</h4><p>para você tocar com segurança</p></div>
+      <div><h4>Ou o caso conduzido junto</h4><p>com o escritório Bacellar e Luz</p></div>
+    </div>
+    </div>
+  </div>
+  <div class="folio"><b>07</b></div>
+</section>
+
+<!-- ============ SEMPRE ASSISTIDO ============ -->
+<section class="page alt" id="sempre-assistido" data-title="Grupo exclusivo e acompanhamento" data-toc="Grupo exclusivo e acompanhamento">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Acompanhamento<span>06</span></div>
+  <div class="wrap">
+    <div class="split">
+      <div class="rv">
+        <p class="h-sans">Entre um encontro e outro,</p>
+        <p class="h-serif">o seu escritório sempre assistido.</p>
+        <div class="mt-l">
+          <div class="duo" style="grid-template-columns:1fr">
+            <div><h4>Um grupo exclusivo do seu escritório</h4><p>Com o time Bacellar e Luz dentro, do conselho ao tráfego.</p></div>
+            <div><h4>Reunião de acompanhamento</h4><p>o que foi feito, o resultado e os próximos passos</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="phone rv d1" aria-label="Dados do grupo exclusivo do escritório">
+        <div class="top">Dados do grupo</div>
+        <div class="av"><img src="/assets/monograma.png" alt=""></div>
+        <div class="nm">Dinastia Black · Individual</div>
+        <div class="sb">Grupo · 9 participantes</div>
+        <div class="lbl">9 participantes</div>
+        <div class="me"><i>V</i>Você</div>
+        <div class="team">Time Bacellar e Luz</div>
+        <ul>
+          <li><img src="/assets/andressa-av.jpg" alt="" loading="lazy">Dra. Andressa Bacellar</li>
+          <li><img src="/assets/plinio-av.jpg" alt="" loading="lazy">Dr. Plínio Luz</li>
+          <li><img src="/assets/italo-av.jpg" alt="" loading="lazy">Ítalo&nbsp;<span>· Comercial</span></li>
+          <li><img src="/assets/giancarlo-av.jpg" alt="" loading="lazy">Giancarlo&nbsp;<span>· Marketing</span></li>
+          <li><img src="/assets/amanda-av.jpg" alt="" loading="lazy">Amanda&nbsp;<span>· Gestão de qualidade</span></li>
+          <li><img src="/assets/lorran-av.jpg" alt="" loading="lazy">Lorran&nbsp;<span>· Social selling</span></li>
+          <li><img src="/assets/gengis-av.jpg" alt="" loading="lazy">Gengis&nbsp;<span>· Gestor de tráfego</span></li>
+          <li><img src="/assets/davi-av.jpg" alt="" loading="lazy">Davi&nbsp;<span>· Concierge</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><b>08</b></div>
+</section>
+
+<!-- ============ ENCONTROS 2027 ============ -->
+<section class="page" id="encontros-presenciais" data-title="Encontros presenciais 2027" data-toc="Encontros presenciais 2027">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">2027 · Só para quem é Black<span>07</span></div>
+  <div class="wrap">
+    <div class="split wide-r">
+      <div class="rv">
+        <div class="kick">2027 · Só para quem é Black</div>
+        <div class="giant" style="font-size:clamp(120px,16vw,240px)">2</div>
+        <p class="h-sans" style="font-size:clamp(28px,3.2vw,46px)">encontros presenciais.</p>
+        <p class="body mt">Frente a frente com <strong>Dra. Andressa, Dr. Plínio e equipe.</strong></p>
+      </div>
+      <div class="mosaic rv d1">
+        <div class="ph a"><img src="/assets/encontro1.jpg" alt="Membros da Dinastia Black reunidos" loading="lazy"></div>
+        <div class="ph"><img src="/assets/encontro2.jpg" alt="Encontro presencial em auditório" loading="lazy"></div>
+        <div class="b"><div class="ph"><img src="/assets/encontro3.jpg" alt="Sala de reunião do encontro" loading="lazy"></div><div class="ph"><img src="/assets/encontro4.jpg" alt="Membros em atividade presencial" loading="lazy"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><b>09</b></div>
+</section>
+
+<!-- ============ REDE ============ -->
+<section class="page alt" id="os-melhores-escritorios" data-title="Rede dos melhores escritórios" data-toc="Rede dos melhores escritórios">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Rede<span>08</span></div>
+  <div class="wrap">
+    <div class="ph frame rv" style="aspect-ratio:16/8;margin-bottom:clamp(28px,4vw,48px)"><img src="/assets/capa.jpg" alt="Membros da Dinastia Black" loading="lazy" style="object-position:50% 40%"></div>
+    <p class="h-sans rv" style="font-size:clamp(34px,5vw,74px)">Os melhores escritórios</p>
+    <p class="giant rv d1" style="font-size:clamp(44px,6.6vw,100px)">estão na Black.</p>
+    <hr class="rule">
+    <p class="h-sans rv" style="font-size:clamp(22px,2.4vw,34px)">E quem está aqui tem acesso direto</p>
+    <p class="h-serif rv d1" style="font-size:clamp(22px,2.4vw,34px)">aos melhores escritórios de advocacia bancária do país.</p>
+    <div class="trio mt-l rv d2">
+      <div>Uma opinião sobre um caso</div>
+      <div>Um contato em outra região</div>
+      <div>Uma situação que você nunca viu</div>
+    </div>
+  </div>
+  <div class="folio"><b>10</b></div>
+</section>
+
+
+<!-- ============ PERSONALIZADO · ABERTURA ============ -->
+<section class="page glow-r" id="para-voce" data-title="Preparado para você" data-toc="Preparado para você">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Preparado para você<span>09</span></div>
+  <div class="wrap">
+    <div class="p-hero">
+      <div class="ph frame rv"><img src="/assets/jorge.jpg" alt="Jorge Augusto Ferreira" loading="lazy" style="object-position:50% 0%"></div>
+      <div>
+        <div class="p-for rv">Preparado para</div>
+        <h2 class="p-name rv">Jorge Augusto Ferreira</h2>
+        <p class="p-firm rv">Augusto Ferreira Advogados · Uberaba/MG</p>
+        <hr class="rule">
+        <p class="h-sans rv" style="font-size:clamp(26px,3vw,42px)">Você já provou que o método funciona.</p>
+        <div class="kpis mt rv d1" style="grid-template-columns:1fr 1fr">
+          <div><b>R$ 84 milhões</b><span>em passivos bancários sob gestão</span></div>
+          <div><b>R$ 27 milhões</b><span>novos na carteira em menos de um mês</span></div>
+        </div>
+        <p class="h-serif rv d2 mt" style="font-size:clamp(24px,2.6vw,36px)">Agora o próximo passo é transformar essa carteira em estrutura.</p>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><b>11</b></div>
+</section>
+
+<!-- ============ PERSONALIZADO · MOMENTO ============ -->
+<section class="page alt" id="o-seu-momento" data-title="O momento do seu escritório" data-toc="O momento do seu escritório">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Augusto Ferreira Advogados<span>10</span></div>
+  <div class="wrap">
+    <div class="kick rv">O momento do Augusto Ferreira Advogados</div>
+    <p class="h-sans rv">Um especialista em bancário</p>
+    <p class="h-serif rv d1">com casos grandes e um time enxuto.</p>
+    <div class="facts mt-l rv d2">
+      <div><b>100% bancário</b><span>Especialista, não generalista. A referência que o empresário procura.</span></div>
+      <div><b>Acima de R$ 2 milhões</b><span>Casos de passivo desse porte já chegam ao seu escritório.</span></div>
+      <div><b>Você + 1 a 3 pessoas</b><span>Um time pequeno, com você no centro de cada caso.</span></div>
+      <div><b>Metade no êxito</b><span>Parte relevante do honorário só entra no fim do processo.</span></div>
+    </div>
+    <div class="goal mt-l rv">
+      <div>
+        <div class="kick" style="margin-bottom:8px">A meta para os próximos 12 meses</div>
+        <div class="giant nw">R$ 2 milhões+</div>
+      </div>
+      <div>
+        <p class="h-sans" style="font-size:clamp(20px,2vw,28px)">São mais de R$ 167 mil por mês.</p>
+        <p class="body mt-s">Pelo menos três vezes o faturamento de hoje. Com o tamanho de caso que você já atende, o que separa o escritório dessa meta não é demanda. <strong>É estrutura comercial e de entrega.</strong></p>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><b>12</b></div>
+</section>
+
+<!-- ============ PERSONALIZADO · O QUE A BLACK RESOLVE ============ -->
+<section class="page" id="o-que-a-black-resolve" data-title="O que a Black resolve no seu escritório" data-toc="O que a Black resolve no seu escritório">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Para o seu escritório<span>11</span></div>
+  <div class="wrap">
+    <div class="kick rv">O que identificamos no seu escritório</div>
+    <p class="h-sans rv" style="font-size:clamp(26px,3.2vw,46px)">E o entregável da Black que resolve cada ponto.</p>
+    <div class="match mt-l rv d1">
+      <a href="#pilar-2"><div><span class="tag">Desafio</span><h4>Uma estrutura comercial à altura dos casos que você atende</h4></div><span class="arrow">→</span>
+        <div class="sol"><b>Pilar 2 · Aumento de receita</b><span>Comercial, precificação, anúncios e Instagram, com o Ítalo (comercial) dentro do seu grupo.</span></div></a>
+      <a href="#pilar-1"><div><span class="tag">Desafio</span><h4>Procedimentos para entregar com excelência sem depender de você em cada peça</h4></div><span class="arrow">→</span>
+        <div class="sol"><b>Pilar 1 · Operação jurídica</b><span>Seu time produzindo como se fosse você: dossiê, negociação e treinamento, com a Amanda na gestão de qualidade.</span></div></a>
+      <a href="#pilar-2"><div><span class="tag">Oportunidade</span><h4>Trazer mais honorário para a entrada, sem esperar o fim do processo</h4></div><span class="arrow">→</span>
+        <div class="sol"><b>Precificação no Pilar 2</b><span>Proposta e preço desenhados para o porte do cliente. Na Black, há honorários de entrada de R$ 105 mil a R$ 400 mil.</span></div></a>
+      <a href="#casos-acima-de-1-milhao"><div><span class="tag">Oportunidade</span><h4>Casos acima de R$ 2 milhões conduzidos com segurança</h4></div><span class="arrow">→</span>
+        <div class="sol"><b>Casos acima de R$ 1 milhão</b><span>Consultoria do caso com o nosso time, ou o caso conduzido junto com o Bacellar e Luz.</span></div></a>
+      <a href="#pilar-3"><div><span class="tag">Desejo</span><h4>Passar de R$ 2 milhões no ano com um plano claro</h4></div><span class="arrow">→</span>
+        <div class="sol"><b>Pilar 3 · Conselho jurídico</b><span>Um dia com a Dra. Andressa no seu escritório desenhando a estratégia, e reuniões de acompanhamento depois.</span></div></a>
+    </div>
+  </div>
+  <div class="folio"><b>13</b></div>
+</section>
+
+<!-- ============ PERSONALIZADO · POR ONDE COMEÇAMOS ============ -->
+<section class="page glow-r" id="por-onde-comecamos" data-title="Por onde começamos" data-toc="Por onde começamos">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Por onde começamos<span>12</span></div>
+  <div class="wrap">
+    <p class="h-sans rv">Por onde começamos</p>
+    <p class="h-serif rv d1">no Augusto Ferreira Advogados.</p>
+    <ol class="plan mt-l rv d2">
+      <li><div class="n">1</div><h4>Estruturar o comercial</h4><p>Processo de atendimento, proposta e precificação para fechar mais contratos de alto valor, com mais honorário na entrada.</p></li>
+      <li><div class="n">2</div><h4>Padronizar a entrega</h4><p>Procedimentos, dossiê e treinamento para o time executar com o seu padrão de excelência.</p></li>
+      <li><div class="n">3</div><h4>Escalar com casos grandes</h4><p>Com comercial e entrega estruturados, os casos acima de R$ 2 milhões viram crescimento, não sobrecarga.</p></li>
+    </ol>
+    <div class="club mt-l rv">
+      <p class="h-sans" style="font-size:clamp(22px,2.4vw,32px)">Você não precisa descobrir isso sozinho.</p>
+      <p class="h-serif" style="font-size:clamp(22px,2.4vw,32px)">Na Black, o nosso time faz isso ao seu lado.</p>
+    </div>
+  </div>
+  <div class="folio"><b>14</b></div>
+</section>
+
+<!-- ============ CASE EMMANUELE ============ -->
+<section class="page" id="case-emmanuele" data-title="Case · Emmanuele Santiago Balbino" data-toc="Case · Emmanuele Santiago Balbino">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Case de sucesso Dinastia Black<span>13</span></div>
+  <div class="wrap">
+    <div class="case-head">
+      <div class="ph frame rv"><img src="/assets/emmanuele.jpg" alt="Emmanuele Santiago Balbino" loading="lazy" style="object-position:50% 0%"></div>
+      <div>
+        <div class="kick rv">Case de sucesso Dinastia Black</div>
+        <h2 class="case-name rv">Emmanuele Santiago Balbino</h2>
+        <p class="case-firm rv">Emmanuele Santiago Advogados Associados · Uberaba/MG</p>
+        <div class="blk rv d1"><h5>O desafio</h5><p>Emmanuele faturava entre R$ 40 e 50 mil por mês, mas não conseguia escalar. Dependia só de indicação, tinha dificuldade com liderança e já tinha passado por mentorias que davam acesso a conteúdo sem resultado prático.</p></div>
+        <div class="blk rv d1"><h5>A intervenção</h5><p>Na Dinastia Black, ela encontrou um método que respeitava a realidade do escritório dela. E levou para todas as mesas de negociação um princípio:</p>
+          <blockquote class="pull">“Fé e trabalho inteligente.”</blockquote>
+          <p>Aprendeu a separar amizade de negócio, definir responsabilidades e dizer não ao que não gera resultado. Como já tinha estrutura, começou a aplicar no dia seguinte.</p></div>
+      </div>
+    </div>
+    <div class="blk rv mt-l"><h5>O resultado</h5><p class="body" style="max-width:none">Hoje o escritório tem recorrência de <strong class="gold">R$ 200 a 250 mil por mês</strong>, cinco vezes o que faturava antes. O maior honorário de entrada chegou a <strong class="gold">R$ 400 mil</strong>.</p></div>
+    <div class="kpis mt rv d1">
+      <div><b>5x</b><span>faturamento maior</span></div>
+      <div><b>R$ 400 mil</b><span>de honorário de entrada</span></div>
+      <div><b>10 a 12</b><span>atendimentos por dia, com tráfego pago e indicação</span></div>
+      <div><b>Alto valor</b><span>foco em clientes de alto valor, sem advocacia de massa</span></div>
+    </div>
+    <div class="case-foot mt rv" style="grid-template-columns:1fr">
+      <div class="gold-card"><h5>Ensinamento de ouro</h5><q>O investimento volta para quem se empenha em fazer o negócio funcionar.</q>
+        <ul><li>Não tenha medo de investir em conhecimento.</li><li>Otimismo ajuda, mas é o trabalho inteligente que traz retorno.</li></ul></div>
+    </div>
+  </div>
+  <div class="folio"><b>15</b></div>
+</section>
+
+<!-- ============ CASE HAILTON ============ -->
+<section class="page alt" id="case-hailton" data-title="Case · Hailton da Silva Cunha" data-toc="Case · Hailton da Silva Cunha">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Case de sucesso Dinastia Black<span>14</span></div>
+  <div class="wrap">
+    <div class="case-head">
+      <div class="ph frame rv"><img src="/assets/hailton.jpg" alt="Hailton da Silva Cunha" loading="lazy" style="object-position:50% 0%"></div>
+      <div>
+        <div class="kick rv">Case de sucesso Dinastia Black</div>
+        <h2 class="case-name rv">Hailton da Silva Cunha</h2>
+        <p class="case-firm rv">Nogueira e Cunha Advogados · Brasília/DF</p>
+        <div class="blk rv d1"><h5>O desafio</h5><p>Hailton faturava cerca de R$ 30 mil por mês e dependia de indicações e da boa vontade do Judiciário. Já tinha tentado direito da saúde e direito tributário, mas nenhuma das duas áreas deu liga.</p></div>
+        <div class="blk rv d1"><h5>A intervenção</h5><p>No Dinastia Black, a virada veio quando ele dominou as regras de provisionamento bancário, assistindo às aulas até entender cada cálculo. E passou a negociar com um princípio:</p>
+          <blockquote class="pull">“Quem negocia com base nas regras do Banco Central é respeitado pelo banco.”</blockquote>
+          <p>Corrigiu a rota: trocou a prospecção de produtor rural, que rendeu dois clientes em três meses, pela Reestruturação de Passivo Bancário. Passou a montar propostas fundamentadas nas normas do Banco Central, sem achismo.</p></div>
+      </div>
+    </div>
+    <div class="blk rv mt-l"><h5>O resultado</h5><p class="body" style="max-width:none">Em menos de um mês após mudar o foco, fechou o primeiro contrato, com <strong class="gold">R$ 92 mil</strong> de honorário de entrada. Hoje o escritório fatura <strong class="gold">3x mais</strong> do que antes, com clientes de maior porte e honorário na entrada.</p></div>
+    <div class="kpis mt rv d1">
+      <div><b>3x</b><span>faturamento maior</span></div>
+      <div><b>R$ 105 mil</b><span>de honorário de entrada</span></div>
+      <div><b>1 → 2</b><span>de 1 atendimento por semana a 2 por dia</span></div>
+      <div><b>Bancos</b><span>propostas técnicas que ganharam o respeito dos bancos</span></div>
+    </div>
+    <div class="case-foot mt rv">
+      <div class="gold-card"><h5>Ensinamento de ouro</h5><q>Estudo técnico sem prospecção não fecha contrato. É a soma dos dois que traz previsibilidade.</q>
+        <ul><li>Domine as resoluções do Banco Central antes de sentar para negociar.</li><li>Atenda só o caso que é viável. Qualidade vale mais que volume.</li></ul></div>
+      <div class="ph frame"><img src="/assets/hailton-time.jpg" alt="Hailton e sua equipe no escritório" loading="lazy" style="object-position:50% 30%"></div>
+    </div>
+  </div>
+  <div class="folio"><b>16</b></div>
+</section>
+
+
+
+
+
+<!-- ============ ANCORAGEM ============ -->
+<section class="page" id="ancoragem" data-title="O que você teria que contratar" data-toc="O que você teria que contratar">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Investimento<span>15</span></div>
+  <div class="wrap">
+    <div class="split" style="align-items:end">
+      <div class="rv">
+        <div class="kick">Para ter tudo isso, você teria que contratar</div>
+        <table class="payroll">
+          <tbody>
+            <tr><td>Advogado sênior judicial</td><td>liderar o time no judicial</td><td>R$ 5.000</td></tr>
+            <tr><td>Advogado sênior extrajudicial</td><td>liderar o time no extrajudicial</td><td>R$ 5.000</td></tr>
+            <tr><td>Gestor de marketing</td><td>resolver a comunicação</td><td>R$ 3.000</td></tr>
+            <tr><td>Comercial</td><td>reuniões de fechamento</td><td>R$ 4.500</td></tr>
+            <tr><td>Gestor de tráfego</td><td>gerenciar os anúncios</td><td>R$ 2.500</td></tr>
+            <tr><td>Social selling</td><td>vender pelo Instagram</td><td>R$ 2.500</td></tr>
+          </tbody>
+          <tfoot><tr><td>Folha por mês</td><td></td><td>R$ 22.500</td></tr></tfoot>
+        </table>
+      </div>
+      <div class="rv d1">
+        <div class="giant nw" style="font-size:clamp(56px,7vw,112px)">R$ 270 mil</div>
+        <p class="h-sans" style="font-size:clamp(26px,3vw,40px)">por ano.</p>
+        <p class="body mt-s">Sem contar encargos. E sem ninguém que já fez isso antes.</p>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><b>17</b></div>
+</section>
+
+<!-- ============ INVESTIMENTO ============ -->
+<section class="page glow-r" id="investimento" data-title="Investimento" data-toc="Investimento">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Dinastia Black · Investimento<span>16</span></div>
+  <div class="wrap">
+    <div class="rv">
+      <div class="kick">Dinastia Black · Investimento</div>
+      <div class="giant nw" style="font-size:clamp(60px,9vw,140px)">R$ 100 mil</div>
+    </div>
+    <hr class="rule">
+    <div class="price rv" id="price">
+      <span class="badge">Só neste evento</span>
+      <div class="mt"><span class="from">R$ 100 mil</span></div>
+      <div class="giant now nw">R$ 79.900</div>
+      <div class="inst"><span class="lead" style="color:var(--ink)">à vista, ou</span><span class="x">12x de</span><span class="v">R$ 6.658,33</span><span class="lead">sem juros.</span></div>
+    </div>
+    <hr class="rule">
+    <p class="h-sans rv" style="font-size:clamp(24px,2.8vw,40px)">Menos que um advogado pleno.</p>
+  </div>
+  <div class="folio"><b>18</b></div>
+</section>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="page plain" id="manifesto" data-title="Manifesto Bacellar & Luz" data-toc="Manifesto Bacellar &amp; Luz">
+  <div class="runhead"><img src="/assets/emblema.png" alt="">Bacellar &amp; Luz<span>Manifesto</span></div>
+  <div class="wrap">
+    <div class="ph frame rv" style="aspect-ratio:16/9.4"><img src="/assets/fundadores.jpg" alt="Dr. Plínio Luz e Dra. Andressa Bacellar" loading="lazy" style="object-position:50% 30%"></div>
+    <div class="mani mt-l">
+      <p class="big rv">Nós, do Grupo <em>Bacellar &amp; Luz</em>, colocamos a engenharia do sistema bancário do seu lado da mesa, para que <em>ninguém perca o que construiu por negociar no escuro.</em></p>
+      <div class="rv d1">
+        <p class="body">Acreditamos que ninguém deveria perder patrimônio, dignidade ou o controle do próprio negócio por não entender a matemática que o banco usa por trás do balcão. Na Bacellar &amp; Luz Academy, transformamos essa convicção em prática ao formar advogados que dominam a engenharia regulatória do sistema bancário.</p>
+        <p class="body mt-s">Ensinamos o método que aplicamos no escritório: diagnóstico, matemática exata, dossiê técnico e negociação de igual para igual, com fé, excelência e entrega total.</p>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><b>19</b></div>
+</section>
+
+<!-- ============ CONTRACAPA ============ -->
+<section class="back" id="contracapa" data-title="Contracapa">
+  <div class="pat"></div>
+  <img class="em" src="/assets/logo-emblema.png" alt="Dinastia Black" loading="lazy">
+  <p><b>Dinastia Black</b><br>Um programa Bacellar &amp; Luz · Evento Acelerador 2026</p>
+  <a class="top-link" href="#capa">Voltar à capa ↑</a>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var d=document, b=d.body;
+  b.classList.remove('no-js'); d.documentElement.classList.add('js');
+
+
+  // contents + toc
+  var pages=[].slice.call(d.querySelectorAll('[data-toc]'));
+  var cl=d.getElementById('contentsList'), tl=d.getElementById('tocList');
+  pages.forEach(function(p,i){
+    var folio=p.querySelector('.folio b'), pg=folio?folio.textContent:'';
+    var n=String(i+1).padStart(2,'0'), title=p.getAttribute('data-toc');
+    var li='<li><a href="#'+p.id+'"><span class="n">'+n+'</span><span class="tt">'+title+'</span><span class="pg">p. '+pg+'</span></a></li>';
+    cl.insertAdjacentHTML('beforeend',li); tl.insertAdjacentHTML('beforeend',li);
+  });
+
+  // smooth jumps (works inside sandboxed frames)
+  d.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#"]'); if(!a) return;
+    var id=a.getAttribute('href').slice(1); var el=id&&d.getElementById(id); if(!el) return;
+    e.preventDefault(); closeToc(); el.scrollIntoView({behavior:'smooth',block:'start'});
+    try{history.replaceState(null,'','#'+id);}catch(_){}
+  });
+
+  // toc drawer
+  var toc=d.getElementById('toc'), ob=d.getElementById('openToc');
+  function openToc(){toc.classList.add('open');ob.setAttribute('aria-expanded','true');b.style.overflow='hidden';}
+  function closeToc(){toc.classList.remove('open');ob.setAttribute('aria-expanded','false');b.style.overflow='';}
+  ob.addEventListener('click',openToc); d.getElementById('closeToc').addEventListener('click',closeToc);
+  d.addEventListener('keydown',function(e){if(e.key==='Escape')closeToc();});
+
+  // reveal
+  var targets=[].slice.call(d.querySelectorAll('.rv,#price'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{rootMargin:'0px 0px -8% 0px',threshold:.12});
+    targets.forEach(function(t){io.observe(t);});
+  } else targets.forEach(function(t){t.classList.add('in');});
+
+  // bar, progress, current section
+  var bar=d.getElementById('bar'), prog=d.getElementById('prog'), sec=d.getElementById('secName');
+  var all=[].slice.call(d.querySelectorAll('main > section'));
+  function onScroll(){
+    var y=window.scrollY||d.documentElement.scrollTop, h=d.documentElement.scrollHeight-window.innerHeight;
+    prog.style.transform='scaleX('+(h>0?y/h:0)+')';
+    bar.classList.toggle('on', y>window.innerHeight*.6);
+    var mid=y+window.innerHeight*.35, cur=all[0];
+    for(var i=0;i<all.length;i++){if(all[i].offsetTop<=mid)cur=all[i];}
+    var t=cur.getAttribute('data-title'); if(sec.textContent!==t)sec.textContent=t;
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); onScroll();
+
+  // open at hash
+  if(location.hash){var el=d.getElementById(location.hash.slice(1)); if(el) setTimeout(function(){el.scrollIntoView();},60);}
+})();
+</script>
+</body>
+</html>
